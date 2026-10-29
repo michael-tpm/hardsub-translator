@@ -1,0 +1,16 @@
+name: Feature request
+description: A new subtitle style, language, platform or workflow you need
+labels: [enhancement]
+body:
+  - type: textarea
+    id: need
+    attributes:
+      label: What do you want to do?
+      description: Describe the video and the result you want (e.g. "yellow subtitles on Douyin videos", "Korean source subtitles", "Windows support").
+    validations:
+      required: true
+  - type: textarea
+    id: example
+    attributes:
+      label: Example
+      description: A screenshot of the subtitle style, if relevant.

@@ -1,0 +1,29 @@
+name: Bug report
+description: Something went wrong (leftover subtitles, wrong timing, crash…)
+labels: [bug]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+      description: Which step (detect / import / render / verify) and what you expected instead.
+    validations:
+      required: true
+  - type: textarea
+    id: log
+    attributes:
+      label: Command and output
+      description: The command you ran and the last lines it printed. If verify failed, paste `<work>/verify/report.txt`.
+      render: shell
+  - type: textarea
+    id: frame
+    attributes:
+      label: Screenshot
+      description: A frame or a crop of `review/sheet_*.jpg` / `verify/compare_*.jpg` showing the problem helps a lot. Please only share footage you have the right to share.
+  - type: input
+    id: env
+    attributes:
+      label: macOS version and chip
+      placeholder: macOS 15.3, Apple M2
+    validations:
+      required: true

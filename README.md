@@ -6,7 +6,12 @@ Built for creators who re-edit **Douyin / Xiaohongshu / Bilibili** clips for **T
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE) ![macOS](https://img.shields.io/badge/platform-macOS-lightgrey) ![Python](https://img.shields.io/badge/python-3-blue) ![Offline](https://img.shields.io/badge/runs-100%25%20offline-brightgreen)
 
-[Tiếng Việt ↓](#tiếng-việt)
+[Tiếng Việt ↓](#tiếng-việt) · [中文说明](README_zh.md)
+
+<p align="center">
+  <img src="docs/demo-en.webp" alt="Hardsub Translator demo: burned-in Chinese subtitles removed and replaced with English captions, before and after" width="546">
+  <br><sub>Left: original video with burned-in Chinese subtitles. Right: output of <code>./dich.sh render</code>. Every frame verified clean. (Demo footage is AI-generated for illustration.)</sub>
+</p>
 
 ---
 
@@ -22,6 +27,21 @@ Built for creators who re-edit **Douyin / Xiaohongshu / Bilibili** clips for **T
 - **Any video length.** Resolution, FPS and duration are read automatically. Audio is kept untouched.
 
 Real run: a 2-minute 720×1280 Douyin cooking video with 50 subtitles took about 40 s to detect, about 2 min to render and about 1.5 min to verify on an Apple Silicon Mac. The result had **0 of 3,716 frames** with leftover Chinese subtitles.
+
+## How it compares
+
+There are great open-source tools in this space. Pick the one that fits your setup:
+
+| | **Hardsub Translator** | [video-subtitle-remover](https://github.com/YaoFANGUK/video-subtitle-remover) | [VideoSubtitleRemover Pro](https://github.com/SysAdminDoc/VideoSubtitleRemover) | [SubErase-Translate-Embed](https://github.com/chenwr727/SubErase-Translate-Embed) |
+|---|---|---|---|---|
+| Removes burned-in subtitles | ✅ classic inpainting | ✅ AI inpainting (STTN / LaMa / ProPainter) | ✅ AI inpainting | ✅ AI inpainting (STTN) |
+| Writes translated captions in the same place and time | ✅ | ❌ removal only | ✅ re-burns a translated SRT | ✅ |
+| Platform | macOS | Windows / macOS / Linux / Docker | Windows | Linux (install uses CUDA builds) |
+| GPU | Not needed | Optional (CUDA / DirectML), CPU mode available | Optional NVIDIA build | Expected (CUDA) |
+| Automatic check of the output for leftover subtitles | ✅ every frame | not mentioned in README | not mentioned in README | not mentioned in README |
+
+**Choose Hardsub Translator** if you are on a Mac, want something light that runs offline in minutes, and your video uses the common white-with-outline Douyin subtitle style.
+**Choose an AI-inpainting tool** if you need the cleanest possible erase on busy, fast-moving backgrounds and have a GPU.
 
 ## How it works
 
@@ -86,6 +106,17 @@ Options:
 
 The repo ships a slash command at `.claude/commands/hardsub.md`. Open the folder in Claude Code and run `/hardsub path/to/video.mp4` to detect, translate, render and verify automatically. The tool itself does **not** need any AI.
 
+## Roadmap
+
+- [ ] Windows and Linux support (RapidOCR as an alternative to Apple Vision)
+- [ ] Optional AI inpainting (LaMa) for complex backgrounds
+- [ ] Built-in machine translation (optional API) with a glossary
+- [ ] Coloured subtitles and subtitles on a solid box
+- [ ] Korean, Japanese and English source subtitles
+- [ ] Batch mode for a whole folder
+
+Ideas and pull requests are welcome. Open an issue to discuss.
+
 ## Limitations
 
 - **Subtitle style.** It works on **white subtitles with a dark outline or shadow**, the most common Douyin style. Coloured subtitles need the colour threshold in `white_mask()` adjusted.
@@ -108,6 +139,18 @@ No. Everything runs locally: Apple Vision, OpenCV and ffmpeg.
 **Is the original video modified?**
 No. A new file is written.
 
+**Is there a lightweight video-subtitle-remover alternative for Mac that also translates?**
+Yes, this tool. It uses Apple Vision and OpenCV on the CPU, with no model downloads. A 2-minute 720p video takes a few minutes end to end.
+
+**Can it translate automatically?**
+The tool itself does not call any translation service. Fill `dich.tsv` by hand, paste it into any translator or AI chat, or use the included Claude Code command `/hardsub`, which translates and verifies for you.
+
+**Does it work with Japanese or Korean subtitles?**
+Not yet. Chinese (Simplified and Traditional) only for now. Other source languages are on the roadmap.
+
+**What subtitle styles are supported?**
+White text with a dark outline or shadow, the default style on Douyin and most Chinese short-video apps.
+
 Please only process videos you have the right to edit and re-publish.
 
 ---
@@ -119,6 +162,8 @@ Please only process videos you have the right to edit and re-publish.
 **Công cụ miễn phí, chạy offline trên macOS.** Công cụ tự tìm phụ đề tiếng Trung dính cứng trên video (hardsub), xóa đi, rồi ghi chữ tiếng Việt đúng vị trí và đúng từng khung hình. Sau đó nó tự kiểm tra lại từng khung để chắc không còn sót chữ Trung.
 
 Dành cho người làm nội dung lấy video **Douyin, Xiaohongshu (Tiểu Hồng Thư), Bilibili** để đăng lại lên **TikTok, Reels, YouTube Shorts**, và cho ai cần **vietsub video Trung Quốc** mà không muốn gõ lại phụ đề bằng tay.
+
+<p align="center"><img src="docs/demo-vi.webp" alt="Demo xóa phụ đề tiếng Trung và thay bằng tiếng Việt, trước và sau" width="546"></p>
 
 ### Tính năng
 
@@ -156,6 +201,10 @@ Lệnh tiếng Việt (`do / nhap / xuat / kiem`) và tiếng Anh (`detect / imp
 **Có cần AI hay internet không?** Không. Mọi thứ chạy trên máy. Bước dịch thì bạn tự điền, hoặc nhờ công cụ dịch hay AI tùy ý.
 
 **Video gốc có bị sửa không?** Không. Công cụ luôn tạo file mới.
+
+**Có công cụ nào nhẹ hơn video-subtitle-remover, chạy trên Mac mà còn dịch được không?** Có, chính công cụ này. Không cần card đồ họa hay tải mô hình AI. Video 720p dài 2 phút xử lý trong vài phút.
+
+**Có tự dịch được không?** Công cụ không tự gọi dịch vụ dịch nào. Bạn tự điền `dich.tsv`, dán vào Google Dịch, ChatGPT hoặc Claude, hoặc dùng lệnh `/hardsub` trong Claude Code để dịch và kiểm tra tự động.
 
 **Giới hạn:** chỉ chạy trên macOS. Chỉ xử lý được phụ đề chữ trắng có viền hoặc bóng tối (kiểu phổ biến trên Douyin).
 
